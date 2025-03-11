@@ -11,6 +11,11 @@
 		972FE5C42D7D97EE00414E44 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5C32D7D97EE00414E44 /* ContentView.swift */; };
 		972FE5C62D7D97F000414E44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 972FE5C52D7D97F000414E44 /* Assets.xcassets */; };
 		972FE5C92D7D97F000414E44 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 972FE5C82D7D97F000414E44 /* Preview Assets.xcassets */; };
+		972FE5D22D7D9B9200414E44 /* GazeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5D12D7D9B9200414E44 /* GazeDetector.swift */; };
+		972FE5D42D7D9CC600414E44 /* VisionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5D32D7D9CC600414E44 /* VisionProcessor.swift */; };
+		972FE5D62D7D9CD900414E44 /* PageTurnManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5D52D7D9CD900414E44 /* PageTurnManager.swift */; };
+		972FE5D82D7D9CEA00414E44 /* CamaraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5D72D7D9CEA00414E44 /* CamaraManager.swift */; };
+		972FE5DA2D7D9D0600414E44 /* BlinkRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5D92D7D9D0600414E44 /* BlinkRecognizer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +24,11 @@
 		972FE5C32D7D97EE00414E44 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		972FE5C52D7D97F000414E44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		972FE5C82D7D97F000414E44 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		972FE5D12D7D9B9200414E44 /* GazeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeDetector.swift; sourceTree = "<group>"; };
+		972FE5D32D7D9CC600414E44 /* VisionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionProcessor.swift; sourceTree = "<group>"; };
+		972FE5D52D7D9CD900414E44 /* PageTurnManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageTurnManager.swift; sourceTree = "<group>"; };
+		972FE5D72D7D9CEA00414E44 /* CamaraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamaraManager.swift; sourceTree = "<group>"; };
+		972FE5D92D7D9D0600414E44 /* BlinkRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlinkRecognizer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +63,9 @@
 			children = (
 				972FE5C12D7D97EE00414E44 /* GazeTurnApp.swift */,
 				972FE5C32D7D97EE00414E44 /* ContentView.swift */,
+				972FE5CF2D7D9A3700414E44 /* ViewModel */,
 				972FE5C52D7D97F000414E44 /* Assets.xcassets */,
+				972FE5D02D7D9A4A00414E44 /* FeatManager */,
 				972FE5C72D7D97F000414E44 /* Preview Content */,
 			);
 			path = GazeTurn;
@@ -65,6 +77,49 @@
 				972FE5C82D7D97F000414E44 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		972FE5CF2D7D9A3700414E44 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		972FE5D02D7D9A4A00414E44 /* FeatManager */ = {
+			isa = PBXGroup;
+			children = (
+				972FE5DC2D7D9D3C00414E44 /* PageControl */,
+				972FE5DB2D7D9D2A00414E44 /* GazeCore */,
+				972FE5DD2D7D9D4E00414E44 /* Camara */,
+			);
+			path = FeatManager;
+			sourceTree = "<group>";
+		};
+		972FE5DB2D7D9D2A00414E44 /* GazeCore */ = {
+			isa = PBXGroup;
+			children = (
+				972FE5D92D7D9D0600414E44 /* BlinkRecognizer.swift */,
+				972FE5D32D7D9CC600414E44 /* VisionProcessor.swift */,
+				972FE5D12D7D9B9200414E44 /* GazeDetector.swift */,
+			);
+			path = GazeCore;
+			sourceTree = "<group>";
+		};
+		972FE5DC2D7D9D3C00414E44 /* PageControl */ = {
+			isa = PBXGroup;
+			children = (
+				972FE5D52D7D9CD900414E44 /* PageTurnManager.swift */,
+			);
+			path = PageControl;
+			sourceTree = "<group>";
+		};
+		972FE5DD2D7D9D4E00414E44 /* Camara */ = {
+			isa = PBXGroup;
+			children = (
+				972FE5D72D7D9CEA00414E44 /* CamaraManager.swift */,
+			);
+			path = Camara;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +192,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				972FE5D82D7D9CEA00414E44 /* CamaraManager.swift in Sources */,
+				972FE5DA2D7D9D0600414E44 /* BlinkRecognizer.swift in Sources */,
+				972FE5D42D7D9CC600414E44 /* VisionProcessor.swift in Sources */,
 				972FE5C42D7D97EE00414E44 /* ContentView.swift in Sources */,
+				972FE5D62D7D9CD900414E44 /* PageTurnManager.swift in Sources */,
 				972FE5C22D7D97EE00414E44 /* GazeTurnApp.swift in Sources */,
+				972FE5D22D7D9B9200414E44 /* GazeDetector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
