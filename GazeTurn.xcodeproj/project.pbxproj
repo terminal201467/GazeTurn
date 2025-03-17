@@ -16,6 +16,8 @@
 		972FE5D62D7D9CD900414E44 /* PageTurnManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5D52D7D9CD900414E44 /* PageTurnManager.swift */; };
 		972FE5D82D7D9CEA00414E44 /* CamaraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5D72D7D9CEA00414E44 /* CamaraManager.swift */; };
 		972FE5DA2D7D9D0600414E44 /* BlinkRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5D92D7D9D0600414E44 /* BlinkRecognizer.swift */; };
+		972FE5E02D8851C900414E44 /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5DF2D8851C900414E44 /* FileListView.swift */; };
+		972FE5E22D88522500414E44 /* BrowseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5E12D88522500414E44 /* BrowseView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,8 @@
 		972FE5D52D7D9CD900414E44 /* PageTurnManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageTurnManager.swift; sourceTree = "<group>"; };
 		972FE5D72D7D9CEA00414E44 /* CamaraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamaraManager.swift; sourceTree = "<group>"; };
 		972FE5D92D7D9D0600414E44 /* BlinkRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlinkRecognizer.swift; sourceTree = "<group>"; };
+		972FE5DF2D8851C900414E44 /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
+		972FE5E12D88522500414E44 /* BrowseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				972FE5C12D7D97EE00414E44 /* GazeTurnApp.swift */,
-				972FE5C32D7D97EE00414E44 /* ContentView.swift */,
+				972FE5DE2D8851A100414E44 /* View */,
 				972FE5CF2D7D9A3700414E44 /* ViewModel */,
 				972FE5C52D7D97F000414E44 /* Assets.xcassets */,
 				972FE5D02D7D9A4A00414E44 /* FeatManager */,
@@ -120,6 +124,16 @@
 				972FE5D72D7D9CEA00414E44 /* CamaraManager.swift */,
 			);
 			path = Camara;
+			sourceTree = "<group>";
+		};
+		972FE5DE2D8851A100414E44 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				972FE5C32D7D97EE00414E44 /* ContentView.swift */,
+				972FE5DF2D8851C900414E44 /* FileListView.swift */,
+				972FE5E12D88522500414E44 /* BrowseView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,9 +207,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				972FE5D82D7D9CEA00414E44 /* CamaraManager.swift in Sources */,
+				972FE5E22D88522500414E44 /* BrowseView.swift in Sources */,
 				972FE5DA2D7D9D0600414E44 /* BlinkRecognizer.swift in Sources */,
 				972FE5D42D7D9CC600414E44 /* VisionProcessor.swift in Sources */,
 				972FE5C42D7D97EE00414E44 /* ContentView.swift in Sources */,
+				972FE5E02D8851C900414E44 /* FileListView.swift in Sources */,
 				972FE5D62D7D9CD900414E44 /* PageTurnManager.swift in Sources */,
 				972FE5C22D7D97EE00414E44 /* GazeTurnApp.swift in Sources */,
 				972FE5D22D7D9B9200414E44 /* GazeDetector.swift in Sources */,
