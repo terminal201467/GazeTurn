@@ -39,6 +39,9 @@ class GazeTurnViewModel: ObservableObject {
     /// 相機權限狀態
     @Published var cameraPermissionStatus: AVAuthorizationStatus = .notDetermined
 
+    /// 手勢視覺化數據
+    @Published var visualizationData: GestureVisualizationData = GestureVisualizationData()
+
     // MARK: - Components
 
     private let cameraManager: CameraManager
@@ -199,7 +202,15 @@ extension GazeTurnViewModel: CameraManagerDelegate {
         // 處理影像幀
         guard let faceObservation = visionProcessor.processFrame(pixelBuffer) else {
             // 未偵測到臉部
+            DispatchQueue.main.async {
+                self.visualizationData.faceDetected = false
+            }
             return
+        }
+
+        // 更新視覺化數據 - 臉部已檢測
+        DispatchQueue.main.async {
+            self.visualizationData.faceDetected = true
         }
 
         // 處理眼睛狀態（眨眼檢測）
@@ -207,8 +218,18 @@ extension GazeTurnViewModel: CameraManagerDelegate {
            let rightEye = faceObservation.landmarks?.rightEye {
             let leftOpen = isEyeOpen(landmark: leftEye)
             let rightOpen = isEyeOpen(landmark: rightEye)
+            let leftHeight = calculateEyeHeight(landmark: leftEye)
+            let rightHeight = calculateEyeHeight(landmark: rightEye)
 
             DispatchQueue.main.async {
+                // 更新視覺化數據
+                self.visualizationData.leftEyeOpen = leftOpen
+                self.visualizationData.rightEyeOpen = rightOpen
+                self.visualizationData.leftEyeHeight = leftHeight
+                self.visualizationData.rightEyeHeight = rightHeight
+                self.visualizationData.blinkThreshold = self.gestureCoordinator.currentMode.blinkThreshold
+
+                // 處理手勢
                 self.gestureCoordinator.processEyeState(leftOpen: leftOpen, rightOpen: rightOpen)
             }
         }
@@ -216,11 +237,28 @@ extension GazeTurnViewModel: CameraManagerDelegate {
         // 處理頭部姿態（搖頭檢測）
         let headShakeDirection = headPoseDetector.detectShake(from: faceObservation)
 
-        if headShakeDirection != .none {
-            DispatchQueue.main.async {
+        // 更新頭部姿態數據
+        let yaw = faceObservation.yaw?.doubleValue ?? 0.0
+        let pitch = faceObservation.pitch?.doubleValue ?? 0.0
+        let roll = faceObservation.roll?.doubleValue ?? 0.0
+
+        DispatchQueue.main.async {
+            self.visualizationData.headYaw = yaw * 180.0 / .pi // 轉換為角度
+            self.visualizationData.headPitch = pitch * 180.0 / .pi
+            self.visualizationData.headRoll = roll * 180.0 / .pi
+            self.visualizationData.shakeThreshold = self.gestureCoordinator.currentMode.shakeAngleThreshold
+
+            if headShakeDirection != .none {
                 self.gestureCoordinator.processHeadShake(headShakeDirection)
             }
         }
+    }
+
+    /// 計算眼睛高度
+    private func calculateEyeHeight(landmark: VNFaceLandmarkRegion2D) -> Double {
+        let points = landmark.normalizedPoints
+        guard points.count >= 6 else { return 0.0 }
+        return abs(points[1].y - points[5].y)
     }
 
     /// 判斷眼睛是否張開
@@ -243,8 +281,13 @@ extension GazeTurnViewModel: GestureCoordinatorDelegate {
     func didDetectPageTurn(direction: PageDirection) {
         handlePageTurn(direction: direction)
 
-        // 重置等待確認狀態
+        // 更新視覺化數據
+        let gestureName = direction == .next ? "翻至下一頁" : "翻至上一頁"
         DispatchQueue.main.async {
+            self.visualizationData.lastGesture = gestureName
+            self.visualizationData.lastGestureTime = Date()
+
+            // 重置等待確認狀態
             self.isWaitingForConfirmation = false
             self.pendingDirection = nil
         }
@@ -254,6 +297,8 @@ extension GazeTurnViewModel: GestureCoordinatorDelegate {
         DispatchQueue.main.async {
             self.isWaitingForConfirmation = true
             self.pendingDirection = direction
+            self.visualizationData.lastGesture = "等待確認 - \(direction == .next ? "下一頁" : "上一頁")"
+            self.visualizationData.lastGestureTime = Date()
             self.updateGestureStatus("等待眨眼確認 - \(direction == .next ? "下一頁" : "上一頁")")
         }
     }
@@ -262,6 +307,8 @@ extension GazeTurnViewModel: GestureCoordinatorDelegate {
         DispatchQueue.main.async {
             self.isWaitingForConfirmation = false
             self.pendingDirection = nil
+            self.visualizationData.lastGesture = "確認超時"
+            self.visualizationData.lastGestureTime = Date()
             self.updateGestureStatus("確認超時")
         }
     }

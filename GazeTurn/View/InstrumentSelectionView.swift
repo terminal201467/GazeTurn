@@ -27,6 +27,12 @@ struct InstrumentSelectionView: View {
     /// 是否顯示詳細資訊
     @State private var showingDetail: Bool = false
 
+    /// 是否顯示校準介面
+    @State private var showingCalibration: Bool = false
+
+    /// 選中的樂器模式（用於傳遞給校準介面）
+    @State private var selectedMode: InstrumentMode?
+
     /// 用於導航返回
     @Environment(\.dismiss) private var dismiss
 
@@ -58,6 +64,11 @@ struct InstrumentSelectionView: View {
                             dismiss()
                         }
                     }
+                }
+            }
+            .sheet(isPresented: $showingCalibration) {
+                if let mode = selectedMode {
+                    CalibrationView(instrumentMode: mode)
                 }
             }
         }
@@ -116,7 +127,7 @@ struct InstrumentSelectionView: View {
                     .foregroundColor(.secondary)
             }
 
-            Text("跳過後將使用鍵盤模式（搖頭控制）")
+            Text("跳過後將使用鍵盤模式（搖頭控制，不進行校準）")
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
@@ -132,13 +143,21 @@ struct InstrumentSelectionView: View {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
 
-        // 儲存選擇並通知
+        // 創建樂器模式
         let mode = InstrumentMode.defaultMode(for: instrument)
-        mode.save()
+        selectedMode = mode
 
-        // 延遲一下以顯示選中效果
+        // 延遲一下以顯示選中效果，然後顯示校準介面
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            onInstrumentSelected?(instrument)
+            if isFirstLaunch {
+                // 首次啟動時顯示校準介面
+                showingCalibration = true
+            } else {
+                // 更改樂器時直接儲存並通知
+                mode.save()
+                onInstrumentSelected?(instrument)
+                dismiss()
+            }
         }
     }
 }

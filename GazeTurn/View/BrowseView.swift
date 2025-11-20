@@ -31,6 +31,9 @@ struct BrowseView: View {
     /// 是否顯示手勢狀態（除錯用）
     @State private var showingGestureStatus: Bool = false
 
+    /// 是否顯示詳細的手勢視覺化
+    @State private var showingDetailedVisualization: Bool = false
+
     /// 用於導航返回
     @Environment(\.dismiss) private var dismiss
 
@@ -52,11 +55,26 @@ struct BrowseView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        showingGestureStatus.toggle()
-                    } label: {
-                        Image(systemName: showingGestureStatus ? "eye.fill" : "eye.slash.fill")
-                            .foregroundColor(.white)
+                    HStack(spacing: 12) {
+                        Button {
+                            showingGestureStatus.toggle()
+                            if showingGestureStatus {
+                                showingDetailedVisualization = false
+                            }
+                        } label: {
+                            Image(systemName: showingGestureStatus ? "eye.fill" : "eye.slash.fill")
+                                .foregroundColor(.white)
+                        }
+
+                        Button {
+                            showingDetailedVisualization.toggle()
+                            if showingDetailedVisualization {
+                                showingGestureStatus = false
+                            }
+                        } label: {
+                            Image(systemName: showingDetailedVisualization ? "chart.bar.fill" : "chart.bar")
+                                .foregroundColor(.white)
+                        }
                     }
                 }
 
@@ -83,6 +101,8 @@ struct BrowseView: View {
             .overlay(alignment: .topLeading) {
                 if showingGestureStatus {
                     gestureStatusOverlay
+                } else if showingDetailedVisualization {
+                    detailedVisualizationOverlay
                 }
             }
             .onAppear {
@@ -127,6 +147,19 @@ struct BrowseView: View {
                 .fill(Color.black.opacity(0.7))
         )
         .padding()
+    }
+
+    // MARK: - Detailed Visualization Overlay
+
+    private var detailedVisualizationOverlay: some View {
+        ScrollView {
+            GestureVisualizationView(
+                data: $viewModel.visualizationData,
+                instrumentMode: InstrumentMode.current()
+            )
+            .padding()
+        }
+        .frame(maxHeight: UIScreen.main.bounds.height * 0.7)
     }
 
     // MARK: - Content View
