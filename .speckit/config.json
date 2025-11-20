@@ -1,0 +1,22 @@
+{
+  "project_name": "GazeTurn",
+  "project_type": "ios_swift",
+  "ai_agents": {
+    "claude_code": {
+      "enabled": true,
+      "model": "claude-3-5-sonnet",
+      "commands": ["specify", "plan", "implement", "analyze", "checklist"]
+    }
+  },
+  "templates": {
+    "spec": "templates/ios-spec-template.md",
+    "plan": "templates/ios-plan-template.md",
+    "tasks": "templates/ios-tasks-template.md"
+  },
+  "directories": {
+    "specs": "specs",
+    "plans": "plans",
+    "tasks": "tasks",
+    "memory": "memory"
+  }
+}
