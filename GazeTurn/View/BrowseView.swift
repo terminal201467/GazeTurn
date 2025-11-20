@@ -16,7 +16,10 @@ struct BrowseView: View {
     /// 要顯示的檔案
     let file: MusicFile
 
-    /// 當前頁面索引
+    /// ViewModel（統一管理手勢和頁面控制）
+    @StateObject private var viewModel = GazeTurnViewModel()
+
+    /// 當前頁面索引（從 ViewModel 同步）
     @State private var currentPage: Int = 0
 
     /// 總頁數
@@ -24,6 +27,9 @@ struct BrowseView: View {
 
     /// 是否顯示控制按鈕
     @State private var showingControls: Bool = true
+
+    /// 是否顯示手勢狀態（除錯用）
+    @State private var showingGestureStatus: Bool = false
 
     /// 用於導航返回
     @Environment(\.dismiss) private var dismiss
@@ -45,6 +51,15 @@ struct BrowseView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        showingGestureStatus.toggle()
+                    } label: {
+                        Image(systemName: showingGestureStatus ? "eye.fill" : "eye.slash.fill")
+                            .foregroundColor(.white)
+                    }
+                }
+
                 ToolbarItem(placement: .principal) {
                     toolbarTitle
                 }
@@ -65,7 +80,53 @@ struct BrowseView: View {
                     showingControls.toggle()
                 }
             }
+            .overlay(alignment: .topLeading) {
+                if showingGestureStatus {
+                    gestureStatusOverlay
+                }
+            }
+            .onAppear {
+                setupViewModel()
+                requestCameraPermissionAndStart()
+            }
+            .onDisappear {
+                viewModel.stopCamera()
+            }
         }
+    }
+
+    // MARK: - Gesture Status Overlay
+
+    private var gestureStatusOverlay: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("手勢狀態")
+                .font(.headline)
+                .foregroundColor(.white)
+
+            Text(viewModel.gestureStatusMessage)
+                .font(.caption)
+                .foregroundColor(.white.opacity(0.9))
+
+            if viewModel.isWaitingForConfirmation {
+                HStack {
+                    ProgressView()
+                        .tint(.white)
+                    Text("等待眨眼確認...")
+                        .font(.caption)
+                        .foregroundColor(.yellow)
+                }
+            }
+
+            Text("相機：\(viewModel.isCameraAvailable ? "運行中" : "未啟動")")
+                .font(.caption2)
+                .foregroundColor(.secondary)
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.black.opacity(0.7))
+        )
+        .padding()
     }
 
     // MARK: - Content View
@@ -169,6 +230,41 @@ struct BrowseView: View {
     private func hapticFeedback() {
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
+    }
+
+    // MARK: - ViewModel Setup
+
+    private func setupViewModel() {
+        // 設定總頁數
+        viewModel.setTotalPages(totalPages)
+
+        // 設定頁面變更回調
+        viewModel.onPageChange = { [self] newPage in
+            withAnimation {
+                currentPage = newPage
+            }
+        }
+
+        // 同步當前頁面到 ViewModel
+        viewModel.currentPage = currentPage
+    }
+
+    private func requestCameraPermissionAndStart() {
+        switch viewModel.cameraPermissionStatus {
+        case .authorized:
+            viewModel.startCamera()
+        case .notDetermined:
+            viewModel.requestCameraPermission { granted in
+                if granted {
+                    viewModel.startCamera()
+                }
+            }
+        case .denied, .restricted:
+            // 顯示權限被拒絕的訊息
+            print("相機權限被拒絕，請至設定中開啟")
+        @unknown default:
+            break
+        }
     }
 }
 

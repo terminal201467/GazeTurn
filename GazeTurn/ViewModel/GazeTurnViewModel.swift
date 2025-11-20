@@ -1,0 +1,276 @@
+//
+//  GazeTurnViewModel.swift
+//  GazeTurn
+//
+//  Created by Claude Code on 2025/3/20.
+//
+
+import Foundation
+import Combine
+import AVFoundation
+import Vision
+
+/// GazeTurn 主視圖模型，統一管理所有手勢檢測和頁面控制組件
+class GazeTurnViewModel: ObservableObject {
+
+    // MARK: - Published Properties
+
+    /// 當前頁面索引
+    @Published var currentPage: Int = 0
+
+    /// 總頁數
+    @Published var totalPages: Int = 1
+
+    /// 是否正在處理手勢
+    @Published var isProcessingGesture: Bool = false
+
+    /// 手勢檢測狀態訊息（用於除錯）
+    @Published var gestureStatusMessage: String = ""
+
+    /// 是否等待確認（混合模式）
+    @Published var isWaitingForConfirmation: Bool = false
+
+    /// 等待確認的方向
+    @Published var pendingDirection: PageDirection?
+
+    /// 相機是否可用
+    @Published var isCameraAvailable: Bool = false
+
+    /// 相機權限狀態
+    @Published var cameraPermissionStatus: AVAuthorizationStatus = .notDetermined
+
+    // MARK: - Components
+
+    private let cameraManager: CameraManager
+    private let visionProcessor: VisionProcessor
+    private let blinkRecognizer: BlinkRecognizer
+    private let headPoseDetector: HeadPoseDetector
+    private let gestureCoordinator: GestureCoordinator
+
+    // MARK: - Page Control
+
+    /// 頁面控制回調（由 BrowseView 設定）
+    var onPageChange: ((Int) -> Void)?
+
+    // MARK: - Initialization
+
+    /// 初始化 ViewModel
+    /// - Parameter instrumentMode: 樂器模式（預設使用當前儲存的模式）
+    init(instrumentMode: InstrumentMode = InstrumentMode.current()) {
+        // 初始化組件
+        self.cameraManager = CameraManager()
+        self.visionProcessor = VisionProcessor()
+        self.blinkRecognizer = BlinkRecognizer()
+        self.headPoseDetector = HeadPoseDetector()
+        self.gestureCoordinator = GestureCoordinator(
+            mode: instrumentMode,
+            blinkRecognizer: blinkRecognizer,
+            headPoseDetector: headPoseDetector
+        )
+
+        // 設定 delegates
+        self.cameraManager.delegate = self
+        self.gestureCoordinator.delegate = self
+
+        // 檢查相機權限
+        checkCameraPermission()
+    }
+
+    // MARK: - Camera Management
+
+    /// 開始相機捕捉
+    func startCamera() {
+        guard cameraPermissionStatus == .authorized else {
+            print("相機權限未授權")
+            return
+        }
+
+        cameraManager.startSession()
+        isCameraAvailable = true
+        updateGestureStatus("相機已啟動")
+    }
+
+    /// 停止相機捕捉
+    func stopCamera() {
+        cameraManager.stopSession()
+        isCameraAvailable = false
+        updateGestureStatus("相機已停止")
+    }
+
+    /// 檢查相機權限
+    func checkCameraPermission() {
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        DispatchQueue.main.async {
+            self.cameraPermissionStatus = status
+        }
+    }
+
+    /// 請求相機權限
+    func requestCameraPermission(completion: @escaping (Bool) -> Void) {
+        AVCaptureDevice.requestAccess(for: .video) { granted in
+            DispatchQueue.main.async {
+                self.cameraPermissionStatus = granted ? .authorized : .denied
+                completion(granted)
+            }
+        }
+    }
+
+    // MARK: - Gesture Control
+
+    /// 更新樂器模式
+    func updateInstrumentMode(_ mode: InstrumentMode) {
+        gestureCoordinator.updateMode(mode)
+        updateGestureStatus("已切換至 \(mode.instrumentType.displayName) 模式")
+    }
+
+    /// 手動翻頁（用於測試或備用控制）
+    func manualPageTurn(direction: PageDirection) {
+        handlePageTurn(direction: direction)
+    }
+
+    // MARK: - Page Navigation
+
+    private func handlePageTurn(direction: PageDirection) {
+        let newPage: Int
+
+        switch direction {
+        case .next:
+            newPage = min(currentPage + 1, totalPages - 1)
+        case .previous:
+            newPage = max(currentPage - 1, 0)
+        }
+
+        guard newPage != currentPage else {
+            updateGestureStatus("已在\(direction == .next ? "最後" : "第一")頁")
+            return
+        }
+
+        currentPage = newPage
+        onPageChange?(newPage)
+
+        // 觸覺反饋
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+
+        updateGestureStatus("翻至第 \(newPage + 1) 頁")
+    }
+
+    // MARK: - Status Updates
+
+    private func updateGestureStatus(_ message: String) {
+        DispatchQueue.main.async {
+            self.gestureStatusMessage = message
+        }
+    }
+
+    // MARK: - Public Methods
+
+    /// 重置頁面
+    func resetPage() {
+        currentPage = 0
+        onPageChange?(0)
+    }
+
+    /// 設定總頁數
+    func setTotalPages(_ count: Int) {
+        totalPages = count
+    }
+
+    /// 獲取當前狀態描述
+    func getStatusDescription() -> String {
+        var status = "狀態：\n"
+        status += "- 相機：\(isCameraAvailable ? "運行中" : "未啟動")\n"
+        status += "- 當前頁面：\(currentPage + 1) / \(totalPages)\n"
+        status += "- 樂器模式：\(gestureCoordinator.currentMode.instrumentType.displayName)\n"
+        status += "- 等待確認：\(isWaitingForConfirmation ? "是" : "否")\n"
+        return status
+    }
+}
+
+// MARK: - CameraManagerDelegate
+
+extension GazeTurnViewModel: CameraManagerDelegate {
+    func didCaptureFrame(_ sampleBuffer: CMSampleBuffer) {
+        // 在背景執行緒處理 Vision
+        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            return
+        }
+
+        // 處理影像幀
+        guard let faceObservation = visionProcessor.processFrame(pixelBuffer) else {
+            // 未偵測到臉部
+            return
+        }
+
+        // 處理眼睛狀態（眨眼檢測）
+        if let leftEye = faceObservation.landmarks?.leftEye,
+           let rightEye = faceObservation.landmarks?.rightEye {
+            let leftOpen = isEyeOpen(landmark: leftEye)
+            let rightOpen = isEyeOpen(landmark: rightEye)
+
+            DispatchQueue.main.async {
+                self.gestureCoordinator.processEyeState(leftOpen: leftOpen, rightOpen: rightOpen)
+            }
+        }
+
+        // 處理頭部姿態（搖頭檢測）
+        let headShakeDirection = headPoseDetector.detectShake(from: faceObservation)
+
+        if headShakeDirection != .none {
+            DispatchQueue.main.async {
+                self.gestureCoordinator.processHeadShake(headShakeDirection)
+            }
+        }
+    }
+
+    /// 判斷眼睛是否張開
+    private func isEyeOpen(landmark: VNFaceLandmarkRegion2D) -> Bool {
+        let points = landmark.normalizedPoints
+        guard points.count >= 6 else { return true }
+
+        // 計算眼睛高度（上下眼瞼的距離）
+        let eyeHeight = abs(points[1].y - points[5].y)
+
+        // 閾值（可以從 InstrumentMode 獲取）
+        let threshold = gestureCoordinator.currentMode.blinkThreshold
+        return eyeHeight > threshold
+    }
+}
+
+// MARK: - GestureCoordinatorDelegate
+
+extension GazeTurnViewModel: GestureCoordinatorDelegate {
+    func didDetectPageTurn(direction: PageDirection) {
+        handlePageTurn(direction: direction)
+
+        // 重置等待確認狀態
+        DispatchQueue.main.async {
+            self.isWaitingForConfirmation = false
+            self.pendingDirection = nil
+        }
+    }
+
+    func waitingForConfirmation(direction: PageDirection) {
+        DispatchQueue.main.async {
+            self.isWaitingForConfirmation = true
+            self.pendingDirection = direction
+            self.updateGestureStatus("等待眨眼確認 - \(direction == .next ? "下一頁" : "上一頁")")
+        }
+    }
+
+    func confirmationTimeout() {
+        DispatchQueue.main.async {
+            self.isWaitingForConfirmation = false
+            self.pendingDirection = nil
+            self.updateGestureStatus("確認超時")
+        }
+    }
+}
+
+// MARK: - Deinitializer
+
+extension GazeTurnViewModel {
+    deinit {
+        stopCamera()
+    }
+}
