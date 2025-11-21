@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSCameraUsageDescription</key>
+	<string>GazeTurn 需要使用前置相機來檢測您的眼睛和頭部動作，以實現手勢控制翻頁功能。這項功能可讓您在演奏樂器時免手動翻閱樂譜。</string>
+	<key>NSCameraUsageDescriptionKey</key>
+	<string>GazeTurn uses the front camera to detect your eye and head movements for hands-free page turning while playing musical instruments.</string>
+	<key>CFBundleDisplayName</key>
+	<string>GazeTurn</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.jhenmu.GazeTurn</string>
+	<key>CFBundleName</key>
+	<string>GazeTurn</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>UILaunchScreen</key>
+	<dict/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+</dict>
+</plist>
