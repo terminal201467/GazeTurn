@@ -104,11 +104,11 @@ final class IntegrationTests: XCTestCase {
         let recognizer = BlinkRecognizer()
 
         // 閉眼
-        let blinkDetected1 = recognizer.processBlink(leftOpen: false, rightOpen: false)
+        let blinkDetected1 = recognizer.detectBlink(leftOpen: false, rightOpen: false)
         coordinator.processEyeState(leftOpen: false, rightOpen: false)
 
         // 張眼
-        let blinkDetected2 = recognizer.processBlink(leftOpen: true, rightOpen: true)
+        let blinkDetected2 = recognizer.detectBlink(leftOpen: true, rightOpen: true)
         coordinator.processEyeState(leftOpen: true, rightOpen: true)
 
         // 雙眨眼邏輯會在 BlinkRecognizer 內部處理

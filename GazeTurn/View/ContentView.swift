@@ -17,6 +17,9 @@ struct ContentView: View {
     /// 是否顯示樂器選擇介面
     @State private var showingInstrumentSelection: Bool = false
 
+    /// 是否顯示設定介面
+    @State private var showingSettings: Bool = false
+
     /// 當前選擇的樂器類型
     @State private var currentInstrument: InstrumentType = InstrumentMode.current().instrumentType
 
@@ -52,6 +55,9 @@ struct ContentView: View {
                 }
             )
         }
+        .sheet(isPresented: $showingSettings) {
+            SettingsView()
+        }
     }
 
     // MARK: - Main View
@@ -80,6 +86,13 @@ struct ContentView: View {
             }
 
             Divider()
+
+            // 手勢設定
+            Button {
+                showingSettings = true
+            } label: {
+                Label("手勢設定", systemImage: "slider.horizontal.3")
+            }
 
             // 更改樂器
             Button {

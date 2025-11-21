@@ -235,13 +235,16 @@ class CalibrationViewModel: ObservableObject {
                 self.instrumentMode = InstrumentMode(
                     instrumentType: self.instrumentMode.instrumentType,
                     enableBlink: self.instrumentMode.enableBlink,
-                    enableHeadShake: self.instrumentMode.enableHeadShake,
-                    requireConfirmation: self.instrumentMode.requireConfirmation,
-                    shakeAngleThreshold: self.instrumentMode.shakeAngleThreshold,
-                    shakeMinDuration: self.instrumentMode.shakeMinDuration,
                     blinkThreshold: calculatedThreshold,
-                    doubleBinkInterval: self.instrumentMode.doubleBinkInterval,
-                    gestureCooldown: self.instrumentMode.gestureCooldown,
+                    blinkTimeWindow: self.instrumentMode.blinkTimeWindow,
+                    minBlinkDuration: self.instrumentMode.minBlinkDuration,
+                    requiredBlinkCount: self.instrumentMode.requiredBlinkCount,
+                    longBlinkDuration: self.instrumentMode.longBlinkDuration,
+                    enableHeadShake: self.instrumentMode.enableHeadShake,
+                    shakeAngleThreshold: self.instrumentMode.shakeAngleThreshold,
+                    shakeDuration: self.instrumentMode.shakeDuration,
+                    shakeCooldown: self.instrumentMode.shakeCooldown,
+                    requireConfirmation: self.instrumentMode.requireConfirmation,
                     confirmationTimeout: self.instrumentMode.confirmationTimeout
                 )
 
@@ -310,13 +313,16 @@ class CalibrationViewModel: ObservableObject {
                 self.instrumentMode = InstrumentMode(
                     instrumentType: self.instrumentMode.instrumentType,
                     enableBlink: self.instrumentMode.enableBlink,
-                    enableHeadShake: self.instrumentMode.enableHeadShake,
-                    requireConfirmation: self.instrumentMode.requireConfirmation,
-                    shakeAngleThreshold: calculatedThreshold,
-                    shakeMinDuration: self.instrumentMode.shakeMinDuration,
                     blinkThreshold: self.instrumentMode.blinkThreshold,
-                    doubleBinkInterval: self.instrumentMode.doubleBinkInterval,
-                    gestureCooldown: self.instrumentMode.gestureCooldown,
+                    blinkTimeWindow: self.instrumentMode.blinkTimeWindow,
+                    minBlinkDuration: self.instrumentMode.minBlinkDuration,
+                    requiredBlinkCount: self.instrumentMode.requiredBlinkCount,
+                    longBlinkDuration: self.instrumentMode.longBlinkDuration,
+                    enableHeadShake: self.instrumentMode.enableHeadShake,
+                    shakeAngleThreshold: calculatedThreshold,
+                    shakeDuration: self.instrumentMode.shakeDuration,
+                    shakeCooldown: self.instrumentMode.shakeCooldown,
+                    requireConfirmation: self.instrumentMode.requireConfirmation,
                     confirmationTimeout: self.instrumentMode.confirmationTimeout
                 )
 
@@ -401,7 +407,7 @@ extension CalibrationViewModel: CameraManagerDelegate {
                 let leftOpen = isEyeOpen(landmark: leftEye)
                 let rightOpen = isEyeOpen(landmark: rightEye)
 
-                if blinkRecognizer.processBlink(leftOpen: leftOpen, rightOpen: rightOpen) {
+                if blinkRecognizer.detectBlink(leftOpen: leftOpen, rightOpen: rightOpen) {
                     DispatchQueue.main.async {
                         self.recordBlinkSample(eyeHeight: averageHeight)
                     }
