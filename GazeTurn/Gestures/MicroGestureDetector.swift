@@ -9,6 +9,7 @@ import Foundation
 import Vision
 import CoreML
 import AVFoundation
+import Combine
 
 /// 微手勢類型
 enum MicroGestureType: String, CaseIterable {
@@ -359,15 +360,15 @@ struct GazeShiftResult {
 }
 
 /// 微手勢檢測器主類 - GazeTurn v2 進階手勢識別
-class MicroGestureDetector: NSObject {
+class MicroGestureDetector: NSObject, ObservableObject {
 
     // MARK: - Properties
 
     /// 啟用的微手勢類型
-    var enabledGestureTypes: Set<MicroGestureType> = [.eyebrowRaise, .smile, .gazeShift]
+    @Published var enabledGestureTypes: Set<MicroGestureType> = [.eyebrowRaise, .smile, .gazeShift]
 
     /// 檢測敏感度
-    var sensitivity: Double = 0.5 {
+    @Published var sensitivity: Double = 0.5 {
         didSet {
             updateThresholds()
         }
@@ -423,7 +424,7 @@ class MicroGestureDetector: NSObject {
                 totalDetections: state.detectionCount,
                 averageConfidence: state.averageConfidence,
                 averageIntensity: state.averageIntensity,
-                lastDetection: state.lastDetectionTime
+                lastDetection: state.detectionCount > 0 ? state.lastUpdateTime : nil
             )
         }
     }

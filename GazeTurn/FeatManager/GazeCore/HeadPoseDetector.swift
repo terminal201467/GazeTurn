@@ -9,7 +9,7 @@ import Foundation
 import Vision
 
 /// 搖頭方向枚舉
-enum HeadShakeDirection {
+enum HeadShakeDirection: Hashable, Codable {
     case left       // 向左搖頭（上一頁）
     case right      // 向右搖頭（下一頁）
     case none       // 無搖頭動作

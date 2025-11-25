@@ -353,8 +353,8 @@ struct PDFViewRepresentable: UIViewRepresentable {
             queue: .main
         ) { _ in
             if let currentPDFPage = pdfView.currentPage,
-               let document = pdfView.document,
-               let pageIndex = document.index(for: currentPDFPage) {
+               let document = pdfView.document {
+                let pageIndex = document.index(for: currentPDFPage)
                 currentPage = pageIndex
             }
         }

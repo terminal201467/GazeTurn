@@ -108,6 +108,11 @@ struct InstrumentMode: Codable {
         }
     }
 
+    /// 根據樂器類型獲取預設模式（別名方法）
+    static func modeFor(instrumentType: InstrumentType) -> InstrumentMode {
+        return defaultMode(for: instrumentType)
+    }
+
     /// 弦樂器模式：僅眨眼控制
     static func stringInstrumentsMode() -> InstrumentMode {
         return InstrumentMode(
@@ -214,6 +219,11 @@ struct InstrumentMode: Codable {
     }
 
     // MARK: - 描述方法
+
+    /// 獲取模式的簡短描述
+    var description: String {
+        return instrumentType.controlModeDescription
+    }
 
     /// 獲取模式的詳細描述
     var detailedDescription: String {

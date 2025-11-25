@@ -28,7 +28,7 @@ enum CalibrationStatus: String, CaseIterable {
 }
 
 /// Smart calibration configuration for different contexts
-struct CalibrationContext {
+struct CalibrationContext: Codable {
     let environmentalCondition: EnvironmentalCondition
     let instrumentType: InstrumentType
     let userDistance: Double
@@ -68,7 +68,7 @@ enum CalibrationFeedback: String, CaseIterable {
 }
 
 /// One-shot calibration result with confidence scoring
-struct OneshotCalibrationResult {
+struct OnesShotCalibrationResult {
     let gestureType: String
     let recommendedThreshold: Double
     let confidence: Double
@@ -506,9 +506,9 @@ class SmartCalibrationEngine: ObservableObject {
 
         if currentAccuracy < task.targetAccuracy {
             // Try to improve threshold based on recent feedback
-            let recentFeedback = calibrationHistory
+            let recentFeedback = Array(calibrationHistory
                 .filter { $0.gestureType == gestureType }
-                .suffix(5)
+                .suffix(5))
 
             if let averageAdjustment = calculateAverageAdjustment(from: recentFeedback) {
                 let optimizedThreshold = currentThreshold * averageAdjustment
@@ -586,4 +586,3 @@ class SmartCalibrationEngine: ObservableObject {
 
 extension CalibrationLearningData: Codable {}
 extension CalibrationFeedback: Codable {}
-extension CalibrationContext: Codable {}

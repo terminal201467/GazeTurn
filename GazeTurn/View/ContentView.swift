@@ -120,5 +120,5 @@ struct ContentView: View {
 }
 
 #Preview("Main View") {
-    ContentView(hasCompletedOnboarding: true)
+    ContentView()
 }

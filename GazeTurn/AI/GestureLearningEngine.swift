@@ -11,27 +11,65 @@ import Vision
 import Combine
 
 /// 手勢學習資料結構
-struct GestureTrainingData {
+struct GestureTrainingData: Codable {
     let gestureType: GestureType
     let timestamp: Date
     let context: GestureContext
     let features: GestureFeatures
     let outcome: GestureOutcome
     let confidence: Double
+    let threshold: Double
 
-    enum GestureType {
+    enum GestureType: Hashable, Equatable, Codable {
         case blink
         case headShake(direction: HeadShakeDirection)
         case microGesture(type: MicroGestureType)
 
-        enum MicroGestureType {
+        enum MicroGestureType: Hashable, Equatable, Codable {
             case eyebrowRaise
             case smile
             case gazeShift
         }
+
+        private enum CodingKeys: String, CodingKey {
+            case type, direction, microGestureType
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let type = try container.decode(String.self, forKey: .type)
+
+            switch type {
+            case "blink":
+                self = .blink
+            case "headShake":
+                let direction = try container.decode(HeadShakeDirection.self, forKey: .direction)
+                self = .headShake(direction: direction)
+            case "microGesture":
+                let microType = try container.decode(MicroGestureType.self, forKey: .microGestureType)
+                self = .microGesture(type: microType)
+            default:
+                throw DecodingError.dataCorruptedError(forKey: .type, in: container, debugDescription: "Unknown gesture type")
+            }
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            switch self {
+            case .blink:
+                try container.encode("blink", forKey: .type)
+            case .headShake(let direction):
+                try container.encode("headShake", forKey: .type)
+                try container.encode(direction, forKey: .direction)
+            case .microGesture(let type):
+                try container.encode("microGesture", forKey: .type)
+                try container.encode(type, forKey: .microGestureType)
+            }
+        }
     }
 
-    enum GestureOutcome {
+    enum GestureOutcome: Codable {
         case truePositive    // 正確識別的手勢
         case falsePositive   // 誤識別
         case falseNegative   // 漏識別
@@ -41,14 +79,14 @@ struct GestureTrainingData {
 }
 
 /// 手勢上下文資訊
-struct GestureContext {
+struct GestureContext: Hashable, Codable {
     let instrumentType: InstrumentType
     let lightingCondition: LightingCondition
     let userDistance: Double
     let sessionDuration: TimeInterval
     let practiceMode: Bool
 
-    enum LightingCondition {
+    enum LightingCondition: Hashable, Codable {
         case excellent
         case good
         case poor
@@ -66,7 +104,7 @@ struct GestureContext {
 }
 
 /// 手勢特徵向量
-struct GestureFeatures {
+struct GestureFeatures: Codable {
     // 眨眼特徵
     let eyeAspectRatio: Double
     let blinkDuration: Double
@@ -93,7 +131,7 @@ struct GestureFeatures {
 }
 
 /// 個人化手勢檔案
-struct PersonalGestureProfile {
+struct PersonalGestureProfile: Codable {
     var userId: UUID
     var createdDate: Date
     var lastUpdated: Date
@@ -110,21 +148,21 @@ struct PersonalGestureProfile {
     // 性能指標
     var performanceMetrics: PersonalPerformanceMetrics = PersonalPerformanceMetrics()
 
-    struct GesturePreferences {
+    struct GesturePreferences: Codable {
         var preferredGestureTypes: Set<GestureTrainingData.GestureType> = []
         var sensitivityPreference: SensitivityLevel = .medium
         var adaptationSpeed: AdaptationSpeed = .normal
 
-        enum SensitivityLevel {
+        enum SensitivityLevel: Codable {
             case low, medium, high
         }
 
-        enum AdaptationSpeed {
+        enum AdaptationSpeed: Codable {
             case slow, normal, fast
         }
     }
 
-    struct LearningSession {
+    struct LearningSession: Codable {
         let date: Date
         let duration: TimeInterval
         let gesturesProcessed: Int
@@ -132,7 +170,7 @@ struct PersonalGestureProfile {
         let instrumentType: InstrumentType
     }
 
-    struct PersonalPerformanceMetrics {
+    struct PersonalPerformanceMetrics: Codable {
         var totalGestures: Int = 0
         var correctGestures: Int = 0
         var falsePositives: Int = 0
@@ -686,19 +724,3 @@ private struct LearningDataExport: Codable {
     let trainingData: [GestureTrainingData]
     let thresholds: [String: String]
 }
-
-// MARK: - Codable Conformance
-
-extension PersonalGestureProfile: Codable {}
-extension PersonalGestureProfile.GesturePreferences: Codable {}
-extension PersonalGestureProfile.LearningSession: Codable {}
-extension PersonalGestureProfile.PersonalPerformanceMetrics: Codable {}
-extension GestureTrainingData: Codable {}
-extension GestureContext: Codable {}
-extension GestureFeatures: Codable {}
-extension GestureTrainingData.GestureType: Codable {}
-extension GestureTrainingData.GestureType.MicroGestureType: Codable {}
-extension GestureTrainingData.GestureOutcome: Codable {}
-extension GestureContext.LightingCondition: Codable {}
-extension PersonalGestureProfile.GesturePreferences.SensitivityLevel: Codable {}
-extension PersonalGestureProfile.GesturePreferences.AdaptationSpeed: Codable {}

@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import AVFoundation
 import Vision
+import UIKit
 
 /// GazeTurn 主視圖模型，統一管理所有手勢檢測和頁面控制組件
 class GazeTurnViewModel: ObservableObject {
@@ -188,6 +189,10 @@ class GazeTurnViewModel: ObservableObject {
         status += "- 等待確認：\(isWaitingForConfirmation ? "是" : "否")\n"
         return status
     }
+
+    deinit {
+        stopCamera()
+    }
 }
 
 // MARK: - CameraManagerDelegate
@@ -311,13 +316,5 @@ extension GazeTurnViewModel: GestureCoordinatorDelegate {
             self.visualizationData.lastGestureTime = Date()
             self.updateGestureStatus("確認超時")
         }
-    }
-}
-
-// MARK: - Deinitializer
-
-extension GazeTurnViewModel {
-    deinit {
-        stopCamera()
     }
 }

@@ -330,7 +330,7 @@ struct DashboardView: View {
 
                 HealthIndicator(
                     title: "處理負載",
-                    value: frameRateController.performanceMetrics.averageFrameTime / 16.67,
+                    value: Float(frameRateController.performanceMetrics.averageFrameTime / 16.67),
                     format: "%.1fx",
                     goodThreshold: 1.5,
                     warningThreshold: 2.0

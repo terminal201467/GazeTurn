@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import AVFoundation
+import Combine
 
 /// 幀率模式枚舉
 enum FrameRateMode {
@@ -48,7 +49,7 @@ struct SystemPerformanceState {
 }
 
 /// 自適應幀率控制器 - GazeTurn v2 性能引擎核心組件
-class AdaptiveFrameRateController: NSObject {
+class AdaptiveFrameRateController: NSObject, ObservableObject {
 
     // MARK: - Properties
 

@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import AVFoundation
 import Vision
+import UIKit
 
 /// 校準步驟
 enum CalibrationStep: Int, CaseIterable {
@@ -55,13 +56,29 @@ enum CalibrationSampleType {
     case headShakeSample(yawAngle: Double, direction: HeadShakeDirection)
 }
 
-/// 校準狀態
-enum CalibrationStatus {
+/// 校準向導狀態
+enum CalibrationWizardStatus: Equatable {
     case idle
     case collectingSamples
     case calculating
     case completed
     case failed(Error)
+
+    static func == (lhs: CalibrationWizardStatus, rhs: CalibrationWizardStatus) -> Bool {
+        switch (lhs, rhs) {
+        case (.idle, .idle),
+             (.collectingSamples, .collectingSamples),
+             (.calculating, .calculating),
+             (.completed, .completed):
+            return true
+
+        case (.failed, .failed):
+            return true    // ❗忽略 Error，不比較
+
+        default:
+            return false
+        }
+    }
 }
 
 /// 校準 ViewModel
@@ -73,7 +90,7 @@ class CalibrationViewModel: ObservableObject {
     @Published var currentStep: CalibrationStep = .welcome
 
     /// 校準狀態
-    @Published var status: CalibrationStatus = .idle
+    @Published var status: CalibrationWizardStatus = .idle
 
     /// 進度（0.0 ~ 1.0）
     @Published var progress: Double = 0.0

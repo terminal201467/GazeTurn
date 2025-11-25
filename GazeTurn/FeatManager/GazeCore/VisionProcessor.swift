@@ -37,7 +37,7 @@ class VisionProcessor {
     func processFrame(_ pixelBuffer: CVPixelBuffer) -> VNFaceObservation? {
         do {
             try sequenceHandler.perform([faceLandmarksRequest], on: pixelBuffer, orientation: .up)
-            if let results = faceLandmarksRequest.results as? [VNFaceObservation], let face = results.first {
+            if let results = faceLandmarksRequest.results, let face = results.first {
                 return face
             }
         } catch {

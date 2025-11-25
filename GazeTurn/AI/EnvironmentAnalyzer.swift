@@ -13,7 +13,7 @@ import AVFoundation
 import UIKit
 
 /// 照明品質評估
-enum LightingQuality: String, CaseIterable {
+enum LightingQuality: String, CaseIterable, Codable {
     case excellent = "excellent"
     case good = "good"
     case fair = "fair"
@@ -51,7 +51,7 @@ enum LightingQuality: String, CaseIterable {
 }
 
 /// 環境噪聲等級
-enum NoiseLevel: String, CaseIterable {
+enum NoiseLevel: String, CaseIterable, Codable {
     case minimal = "minimal"
     case low = "low"
     case moderate = "moderate"
@@ -80,7 +80,7 @@ enum NoiseLevel: String, CaseIterable {
 }
 
 /// 用戶距離範圍
-enum UserDistanceRange: String, CaseIterable {
+enum UserDistanceRange: String, CaseIterable, Codable {
     case tooClose = "too_close"      // < 30cm
     case close = "close"             // 30-50cm
     case optimal = "optimal"         // 50-80cm
@@ -119,7 +119,7 @@ enum UserDistanceRange: String, CaseIterable {
 }
 
 /// 環境條件綜合評估
-struct EnvironmentalCondition {
+struct EnvironmentalCondition: Codable {
     let lighting: LightingQuality
     let noise: NoiseLevel
     let userDistance: UserDistanceRange
