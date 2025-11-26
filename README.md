@@ -1,7 +1,7 @@
 # GazeTurn
 
 <p align="center">
-  <img src="assets/logo.svg" alt="GazeTurn Logo" width="200"/>
+  <img src="assets/logo.png" alt="GazeTurn Logo" width="200"/>
 </p>
 
 <p align="center">
