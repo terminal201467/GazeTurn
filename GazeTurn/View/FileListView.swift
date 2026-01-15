@@ -287,16 +287,17 @@ class MusicFileManager: ObservableObject {
 
     /// 新增檔案
     func addFile(from url: URL) {
-        // 開始存取安全範圍資源
-        guard url.startAccessingSecurityScopedResource() else {
-            print("無法存取檔案: \(url)")
-            return
+        // 嘗試存取安全範圍資源（對於已在 sandbox 中的檔案可能會失敗，這是正常的）
+        let hasSecurityAccess = url.startAccessingSecurityScopedResource()
+        defer {
+            if hasSecurityAccess {
+                url.stopAccessingSecurityScopedResource()
+            }
         }
-        defer { url.stopAccessingSecurityScopedResource() }
 
         // 複製檔案到應用程式目錄
         guard let destinationURL = copyFileToDocumentsDirectory(from: url) else {
-            print("複製檔案失敗")
+            print("複製檔案失敗: \(url)")
             return
         }
 
