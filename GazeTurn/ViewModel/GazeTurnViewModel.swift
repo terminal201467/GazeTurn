@@ -140,6 +140,8 @@ class GazeTurnViewModel: ObservableObject {
     // MARK: - Page Navigation
 
     private func handlePageTurn(direction: PageDirection) {
+        print("ViewModel.handlePageTurn: 當前頁=\(currentPage), 總頁數=\(totalPages)")
+
         let newPage: Int
 
         switch direction {
@@ -149,12 +151,16 @@ class GazeTurnViewModel: ObservableObject {
             newPage = max(currentPage - 1, 0)
         }
 
+        print("ViewModel.handlePageTurn: 計算新頁=\(newPage)")
+
         guard newPage != currentPage else {
+            print("ViewModel.handlePageTurn: 已在邊界，不翻頁")
             updateGestureStatus("已在\(direction == .next ? "最後" : "第一")頁")
             return
         }
 
         currentPage = newPage
+        print("ViewModel.handlePageTurn: onPageChange 回調存在=\(onPageChange != nil)")
         onPageChange?(newPage)
 
         // 觸覺反饋
@@ -162,6 +168,7 @@ class GazeTurnViewModel: ObservableObject {
         generator.impactOccurred()
 
         updateGestureStatus("翻至第 \(newPage + 1) 頁")
+        print("ViewModel.handlePageTurn: 完成翻頁到第 \(newPage + 1) 頁")
     }
 
     // MARK: - Status Updates

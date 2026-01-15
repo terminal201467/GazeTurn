@@ -112,6 +112,11 @@ struct BrowseView: View {
             .onDisappear {
                 viewModel.stopCamera()
             }
+            .onChange(of: totalPages) { _, newTotalPages in
+                // 當 PDF 載入完成後，更新 ViewModel 的總頁數
+                print("BrowseView: totalPages 更新為 \(newTotalPages)")
+                viewModel.setTotalPages(newTotalPages)
+            }
         }
     }
 
