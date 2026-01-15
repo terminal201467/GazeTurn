@@ -97,7 +97,7 @@ class GazeTurnViewModel: ObservableObject {
         isCameraAvailable = true
         updateGestureStatus("相機已啟動")
         print("相機已啟動，樂器模式: \(gestureCoordinator.currentMode.instrumentType.displayName)")
-        print("啟用搖頭: \(gestureCoordinator.currentMode.enableHeadShake), 啟用眨眼: \(gestureCoordinator.currentMode.enableBlink)")
+        print("啟用搖頭: \(gestureCoordinator.currentMode.enableHeadShake), 啟用眨眼: \(gestureCoordinator.currentMode.enableBlink), 啟用視線: \(gestureCoordinator.currentMode.enableGaze)")
     }
 
     /// 停止相機捕捉
@@ -198,6 +198,7 @@ class GazeTurnViewModel: ObservableObject {
         status += "- 相機：\(isCameraAvailable ? "運行中" : "未啟動")\n"
         status += "- 當前頁面：\(currentPage + 1) / \(totalPages)\n"
         status += "- 樂器模式：\(gestureCoordinator.currentMode.instrumentType.displayName)\n"
+        status += "- 啟用視線控制：\(gestureCoordinator.currentMode.enableGaze ? "是" : "否")\n"
         status += "- 等待確認：\(isWaitingForConfirmation ? "是" : "否")\n"
         return status
     }
@@ -277,10 +278,16 @@ extension GazeTurnViewModel: CameraManagerDelegate {
         let roll = faceObservation.roll?.doubleValue ?? 0.0
         let yawDegrees = yaw * 180.0 / .pi
 
-        // 每秒輸出一次頭部角度
+        // 處理視線方向（視線檢測）
+        let (gazeDirection, gazePosition) = gestureCoordinator.gazeDetector.detectGaze(from: faceObservation)
+
+        // 每秒輸出一次頭部角度和視線位置
         if GazeTurnViewModel.frameCount % 30 == 0 {
             let threshold = self.gestureCoordinator.currentMode.shakeAngleThreshold
             print("頭部 Yaw: \(String(format: "%.1f", yawDegrees))° (閾值: \(threshold)°)")
+            if self.gestureCoordinator.currentMode.enableGaze {
+                print("視線位置: \(String(format: "%.2f", gazePosition)) (閾值: \(self.gestureCoordinator.currentMode.gazeThreshold))")
+            }
         }
 
         DispatchQueue.main.async {
@@ -289,9 +296,19 @@ extension GazeTurnViewModel: CameraManagerDelegate {
             self.visualizationData.headRoll = roll * 180.0 / .pi
             self.visualizationData.shakeThreshold = self.gestureCoordinator.currentMode.shakeAngleThreshold
 
+            // 更新視線數據
+            self.visualizationData.gazePosition = gazePosition
+            self.visualizationData.gazeThreshold = self.gestureCoordinator.currentMode.gazeThreshold
+
             if headShakeDirection != .none {
                 print("檢測到搖頭: \(headShakeDirection.displayName)")
                 self.gestureCoordinator.processHeadShake(headShakeDirection)
+            }
+
+            // 處理視線方向
+            if gazeDirection != .center {
+                print("檢測到視線方向: \(gazeDirection.displayName)")
+                self.gestureCoordinator.processGazeDirection(gazeDirection)
             }
         }
     }

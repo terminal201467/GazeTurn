@@ -43,6 +43,9 @@ class GestureCoordinator {
     /// 頭部姿態檢測器
     private let headPoseDetector: HeadPoseDetector
 
+    /// 視線方向檢測器
+    private let gazeDirectionDetector: GazeDirectionDetector
+
     // MARK: - Hybrid Mode State
 
     /// 混合模式：等待確認的狀態
@@ -69,14 +72,17 @@ class GestureCoordinator {
     ///   - mode: 初始樂器模式
     ///   - blinkRecognizer: 眨眼識別器實例
     ///   - headPoseDetector: 頭部姿態檢測器實例
+    ///   - gazeDirectionDetector: 視線方向檢測器實例
     init(
         mode: InstrumentMode = .current(),
         blinkRecognizer: BlinkRecognizer = BlinkRecognizer(),
-        headPoseDetector: HeadPoseDetector = HeadPoseDetector()
+        headPoseDetector: HeadPoseDetector = HeadPoseDetector(),
+        gazeDirectionDetector: GazeDirectionDetector = GazeDirectionDetector()
     ) {
         self.currentMode = mode
         self.blinkRecognizer = blinkRecognizer
         self.headPoseDetector = headPoseDetector
+        self.gazeDirectionDetector = gazeDirectionDetector
         configureDetectors()
     }
 
@@ -90,6 +96,13 @@ class GestureCoordinator {
             durationThreshold: currentMode.shakeDuration,
             cooldownDuration: currentMode.shakeCooldown
         )
+
+        // 配置視線方向檢測器
+        gazeDirectionDetector.updateThresholds(
+            gazeThreshold: currentMode.gazeThreshold,
+            durationThreshold: currentMode.gazeDuration,
+            cooldownDuration: currentMode.gazeCooldown
+        )
     }
 
     /// 重置狀態
@@ -100,6 +113,7 @@ class GestureCoordinator {
         blinkStartTime = nil
         isBlinking = false
         headPoseDetector.reset()
+        gazeDirectionDetector.reset()
     }
 
     // MARK: - Gesture Processing
@@ -150,6 +164,30 @@ class GestureCoordinator {
 
         // 處理搖頭手勢
         handleHeadShake(direction: pageDir)
+    }
+
+    /// 處理視線方向檢測結果
+    /// - Parameter direction: 視線方向
+    func processGazeDirection(_ direction: GazeDirection) {
+        // 如果當前模式不啟用視線，直接返回
+        guard currentMode.enableGaze else {
+            return
+        }
+
+        // 如果是中心位置，不處理
+        guard direction != .center else { return }
+
+        print("GestureCoordinator: 收到視線方向 - \(direction.displayName)")
+
+        // 將視線方向轉換為翻頁方向
+        guard let pageDir = direction.pageDirection else {
+            print("GestureCoordinator: 無法轉換為翻頁方向")
+            return
+        }
+
+        // 直接觸發翻頁（視線控制不需要確認）
+        print("GestureCoordinator: 視線觸發翻頁...")
+        triggerPageTurn(direction: pageDir)
     }
 
     // MARK: - Private Handlers
@@ -285,6 +323,7 @@ class GestureCoordinator {
         description += "- Instrument: \(currentMode.instrumentType.displayName)\n"
         description += "- Blink Enabled: \(currentMode.enableBlink)\n"
         description += "- Head Shake Enabled: \(currentMode.enableHeadShake)\n"
+        description += "- Gaze Enabled: \(currentMode.enableGaze)\n"
         description += "- Requires Confirmation: \(currentMode.requireConfirmation)\n"
 
         if waitingForConfirmation {
@@ -310,11 +349,21 @@ extension GestureCoordinator {
 
     /// 是否為純眨眼模式
     var isBlinkOnlyMode: Bool {
-        return currentMode.enableBlink && !currentMode.enableHeadShake
+        return currentMode.enableBlink && !currentMode.enableHeadShake && !currentMode.enableGaze
     }
 
     /// 是否為純搖頭模式
     var isHeadShakeOnlyMode: Bool {
-        return !currentMode.enableBlink && currentMode.enableHeadShake
+        return !currentMode.enableBlink && currentMode.enableHeadShake && !currentMode.enableGaze
+    }
+
+    /// 是否為視線控制模式
+    var isGazeMode: Bool {
+        return currentMode.enableGaze
+    }
+
+    /// 獲取視線方向檢測器（用於 ViewModel 處理）
+    var gazeDetector: GazeDirectionDetector {
+        return gazeDirectionDetector
     }
 }

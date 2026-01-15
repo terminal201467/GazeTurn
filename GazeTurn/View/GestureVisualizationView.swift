@@ -21,6 +21,8 @@ struct GestureVisualizationData {
     var faceDetected: Bool = false
     var blinkThreshold: Double = 0.015
     var shakeThreshold: Double = 25.0
+    var gazePosition: Double = 0.5      // 視線位置 (0.0 = 左, 0.5 = 中, 1.0 = 右)
+    var gazeThreshold: Double = 0.15    // 視線閾值
 }
 
 /// 手勢視覺化介面 - 顯示即時手勢檢測狀態
@@ -62,6 +64,12 @@ struct GestureVisualizationView: View {
                 // 頭部姿態（如果啟用）
                 if instrumentMode.enableHeadShake {
                     headPoseSection
+                    Divider()
+                }
+
+                // 視線方向（如果啟用）
+                if instrumentMode.enableGaze {
+                    gazeSection
                     Divider()
                 }
 
@@ -208,6 +216,58 @@ struct GestureVisualizationView: View {
                 color: .green,
                 range: -30...30
             )
+        }
+    }
+
+    // MARK: - Gaze Section
+
+    private var gazeSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image(systemName: "eye.trianglebadge.exclamationmark")
+                    .foregroundColor(.cyan)
+                Text("視線方向")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+            }
+
+            // 視線位置指示器
+            GazePositionBar(
+                position: data.gazePosition,
+                threshold: data.gazeThreshold
+            )
+
+            // 說明文字
+            HStack {
+                Text("閾值:")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+
+                Text(String(format: "%.0f%%", data.gazeThreshold * 100))
+                    .font(.caption2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.cyan)
+
+                Spacer()
+
+                // 視線方向指示
+                let direction = getGazeDirectionText()
+                Text(direction)
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundColor(direction == "中間" ? .secondary : .cyan)
+            }
+        }
+    }
+
+    /// 獲取視線方向文字
+    private func getGazeDirectionText() -> String {
+        if data.gazePosition < (0.5 - data.gazeThreshold) {
+            return "← 向左看"
+        } else if data.gazePosition > (0.5 + data.gazeThreshold) {
+            return "向右看 →"
+        } else {
+            return "中間"
         }
     }
 
@@ -383,6 +443,84 @@ struct HeadPoseBar: View {
                 }
             }
             .frame(height: 16)
+        }
+    }
+}
+
+// MARK: - Gaze Position Bar
+
+struct GazePositionBar: View {
+    let position: Double
+    let threshold: Double
+
+    private var isOverThreshold: Bool {
+        return position < (0.5 - threshold) || position > (0.5 + threshold)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            // 進度條
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    // 背景
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.2))
+                        .frame(height: 12)
+                        .cornerRadius(6)
+
+                    // 左側閾值區域
+                    Rectangle()
+                        .fill(Color.cyan.opacity(0.2))
+                        .frame(width: geometry.size.width * (0.5 - threshold), height: 12)
+                        .cornerRadius(6)
+
+                    // 右側閾值區域
+                    Rectangle()
+                        .fill(Color.cyan.opacity(0.2))
+                        .frame(width: geometry.size.width * (0.5 - threshold), height: 12)
+                        .cornerRadius(6)
+                        .offset(x: geometry.size.width * (0.5 + threshold))
+
+                    // 中心線
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 2, height: 16)
+                        .position(x: geometry.size.width / 2, y: 6)
+
+                    // 左閾值線
+                    Rectangle()
+                        .fill(Color.cyan.opacity(0.6))
+                        .frame(width: 2, height: 16)
+                        .position(x: geometry.size.width * (0.5 - threshold), y: 6)
+
+                    // 右閾值線
+                    Rectangle()
+                        .fill(Color.cyan.opacity(0.6))
+                        .frame(width: 2, height: 16)
+                        .position(x: geometry.size.width * (0.5 + threshold), y: 6)
+
+                    // 當前位置指示器（眼睛圖示）
+                    Image(systemName: "eye.fill")
+                        .font(.system(size: 14))
+                        .foregroundColor(isOverThreshold ? .cyan : .gray)
+                        .position(x: geometry.size.width * position, y: 6)
+                        .animation(.easeInOut(duration: 0.1), value: position)
+                }
+            }
+            .frame(height: 20)
+
+            // 左右標籤
+            HStack {
+                Text("← 上一頁")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+
+                Spacer()
+
+                Text("下一頁 →")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
         }
     }
 }

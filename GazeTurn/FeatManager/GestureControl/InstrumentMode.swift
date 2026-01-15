@@ -54,6 +54,20 @@ struct InstrumentMode: Codable {
     /// 確認超時時間（秒）- 搖頭後等待確認的最長時間
     let confirmationTimeout: TimeInterval
 
+    // MARK: - 視線控制參數
+
+    /// 是否啟用視線控制
+    let enableGaze: Bool
+
+    /// 視線偏移閾值（0.0 ~ 1.0，相對於眼睛寬度的比例）
+    let gazeThreshold: Double
+
+    /// 視線持續時間（秒）- 需要持續看向某方向多久才觸發
+    let gazeDuration: TimeInterval
+
+    /// 視線冷卻時間（秒）- 防止重複觸發
+    let gazeCooldown: TimeInterval
+
     // MARK: - 初始化方法
 
     init(
@@ -69,7 +83,11 @@ struct InstrumentMode: Codable {
         shakeDuration: TimeInterval = 0.3,
         shakeCooldown: TimeInterval = 0.5,
         requireConfirmation: Bool = false,
-        confirmationTimeout: TimeInterval = 2.0
+        confirmationTimeout: TimeInterval = 2.0,
+        enableGaze: Bool = false,
+        gazeThreshold: Double = 0.15,
+        gazeDuration: TimeInterval = 0.8,
+        gazeCooldown: TimeInterval = 1.0
     ) {
         self.instrumentType = instrumentType
         self.enableBlink = enableBlink
@@ -84,6 +102,10 @@ struct InstrumentMode: Codable {
         self.shakeCooldown = shakeCooldown
         self.requireConfirmation = requireConfirmation
         self.confirmationTimeout = confirmationTimeout
+        self.enableGaze = enableGaze
+        self.gazeThreshold = gazeThreshold
+        self.gazeDuration = gazeDuration
+        self.gazeCooldown = gazeCooldown
     }
 
     // MARK: - 預設模式配置
@@ -113,18 +135,22 @@ struct InstrumentMode: Codable {
         return defaultMode(for: instrumentType)
     }
 
-    /// 弦樂器模式：僅眨眼控制
+    /// 弦樂器模式：視線控制（眨眼作為備用）
     static func stringInstrumentsMode() -> InstrumentMode {
         return InstrumentMode(
             instrumentType: .stringInstruments,
-            enableBlink: true,
+            enableBlink: true,              // 眨眼作為備用
             blinkThreshold: 0.03,
             blinkTimeWindow: 0.5,
             minBlinkDuration: 0.1,
             requiredBlinkCount: 2,          // 雙眨眼=下一頁
             longBlinkDuration: 0.5,         // 長眨眼=上一頁
             enableHeadShake: false,
-            requireConfirmation: false
+            requireConfirmation: false,
+            enableGaze: true,               // 啟用視線控制
+            gazeThreshold: 0.12,            // 較低的閾值，更容易觸發
+            gazeDuration: 0.6,              // 持續看 0.6 秒觸發
+            gazeCooldown: 0.8               // 冷卻時間
         )
     }
 
@@ -246,6 +272,13 @@ struct InstrumentMode: Codable {
         if requireConfirmation {
             description += "✓ 需要確認（混合模式）\n"
             description += "  - 確認超時: \(confirmationTimeout)秒\n"
+        }
+
+        if enableGaze {
+            description += "✓ 視線控制已啟用\n"
+            description += "  - 視線閾值: \(String(format: "%.0f", gazeThreshold * 100))%\n"
+            description += "  - 持續時間: \(gazeDuration)秒\n"
+            description += "  - 冷卻時間: \(gazeCooldown)秒\n"
         }
 
         return description

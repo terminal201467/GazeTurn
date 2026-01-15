@@ -33,6 +33,7 @@
 		97D854EB2ED53FEB00D48062 /* GesturePredictionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D854E52ED53FEB00D48062 /* GesturePredictionModel.swift */; };
 		97D854EE2ED53FF200D48062 /* AdaptiveFrameRateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D854EC2ED53FF200D48062 /* AdaptiveFrameRateController.swift */; };
 		97D854F12ED5402700D48062 /* MicroGestureDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D854EF2ED5402700D48062 /* MicroGestureDetector.swift */; };
+		97D854F22ED5410000D48062 /* GazeDirectionDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D854F32ED5410000D48062 /* GazeDirectionDetector.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		97D854E62ED53FEB00D48062 /* SmartCalibrationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartCalibrationEngine.swift; sourceTree = "<group>"; };
 		97D854EC2ED53FF200D48062 /* AdaptiveFrameRateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveFrameRateController.swift; sourceTree = "<group>"; };
 		97D854EF2ED5402700D48062 /* MicroGestureDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicroGestureDetector.swift; sourceTree = "<group>"; };
+		97D854F32ED5410000D48062 /* GazeDirectionDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeDirectionDetector.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -189,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				97D854BF2ED53EA500D48062 /* BlinkRecognizer.swift */,
+				97D854F32ED5410000D48062 /* GazeDirectionDetector.swift */,
 				97D854C02ED53EA500D48062 /* HeadPoseDetector.swift */,
 				97D854C12ED53EA500D48062 /* VisionProcessor.swift */,
 			);
@@ -353,6 +356,7 @@
 				97D854E12ED53F3D00D48062 /* GazeTurnViewModel.swift in Sources */,
 				97D854E22ED53F3D00D48062 /* CalibrationViewModel.swift in Sources */,
 				97D854C62ED53EA500D48062 /* BlinkRecognizer.swift in Sources */,
+				97D854F22ED5410000D48062 /* GazeDirectionDetector.swift in Sources */,
 				97D854C72ED53EA500D48062 /* HeadPoseDetector.swift in Sources */,
 				97D854EE2ED53FF200D48062 /* AdaptiveFrameRateController.swift in Sources */,
 				97D854C82ED53EA500D48062 /* CamaraManager.swift in Sources */,

@@ -141,7 +141,7 @@ enum InstrumentType: String, CaseIterable, Codable {
     var controlModeDescription: String {
         switch self {
         case .stringInstruments:
-            return "眨眼控制：雙眨眼=下一頁，長眨眼=上一頁"
+            return "視線控制：向右看=下一頁，向左看=上一頁"
         case .woodwindBrass:
             return "混合控制：輕微搖頭 + 眨眼確認"
         case .keyboard:
@@ -161,7 +161,7 @@ enum InstrumentType: String, CaseIterable, Codable {
     var controlModeDescriptionEN: String {
         switch self {
         case .stringInstruments:
-            return "Blink: Double blink=next, Long blink=previous"
+            return "Gaze: Look right=next, Look left=previous"
         case .woodwindBrass:
             return "Hybrid: Slight head shake + blink confirmation"
         case .keyboard:
