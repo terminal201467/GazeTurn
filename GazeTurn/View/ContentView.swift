@@ -109,7 +109,9 @@ struct ContentView: View {
             }
         } label: {
             Image(systemName: "gear")
+                .accessibilityIdentifier("settingsMenuButton")
         }
+        .accessibilityIdentifier("settingsMenu")
     }
 }
 

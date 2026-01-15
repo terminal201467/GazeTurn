@@ -63,6 +63,7 @@ struct InstrumentSelectionView: View {
                         Button("取消") {
                             dismiss()
                         }
+                        .accessibilityIdentifier("cancelButton")
                     }
                 }
             }
@@ -126,6 +127,7 @@ struct InstrumentSelectionView: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
+            .accessibilityIdentifier("skipButton")
 
             Text("跳過後將使用鍵盤模式（搖頭控制，不進行校準）")
                 .font(.caption)
@@ -208,6 +210,7 @@ struct InstrumentCard: View {
         .buttonStyle(PlainButtonStyle())
         .scaleEffect(isSelected ? 1.05 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
+        .accessibilityIdentifier("instrumentCard_\(instrument.rawValue)")
     }
 }
 

@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "09456354-3EB7-48A5-A75B-10D776850E36",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:GazeTurn.xcodeproj",
+      "identifier" : "972FE5BD2D7D97EE00414E44",
+      "name" : "GazeTurn"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:GazeTurn.xcodeproj",
+        "identifier" : "9778C2B22F184FF6000EC989",
+        "name" : "GazeTurnUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

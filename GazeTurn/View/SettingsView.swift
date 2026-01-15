@@ -80,6 +80,7 @@ struct SettingsView: View {
                     Button("取消") {
                         dismiss()
                     }
+                    .accessibilityIdentifier("cancelButton")
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -88,6 +89,7 @@ struct SettingsView: View {
                         dismiss()
                     }
                     .fontWeight(.semibold)
+                    .accessibilityIdentifier("saveButton")
                 }
             }
         }
@@ -142,10 +144,12 @@ struct SettingsView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.small)
+                .accessibilityIdentifier("changeInstrumentButton")
             }
             .padding(.vertical, 4)
         } header: {
             Text("樂器類型")
+                .accessibilityIdentifier("instrumentTypeHeader")
         } footer: {
             Text("不同樂器類型有不同的預設手勢控制設定")
         }
@@ -167,6 +171,7 @@ struct SettingsView: View {
                         Text("眨眼敏感度")
                     }
                     .accentColor(.blue)
+                    .accessibilityIdentifier("blinkThresholdSlider")
 
                     Text("高")
                         .font(.caption)
@@ -211,6 +216,7 @@ struct SettingsView: View {
                             Text("搖頭角度")
                         }
                         .accentColor(.green)
+                        .accessibilityIdentifier("shakeAngleSlider")
 
                         Text("60°")
                             .font(.caption)
@@ -244,6 +250,7 @@ struct SettingsView: View {
                             Text("搖頭持續時間")
                         }
                         .accentColor(.green)
+                        .accessibilityIdentifier("shakeDurationSlider")
 
                         Text("1.0s")
                             .font(.caption)
@@ -287,6 +294,7 @@ struct SettingsView: View {
                         Text("確認超時時間")
                     }
                     .accentColor(.orange)
+                    .accessibilityIdentifier("confirmationTimeoutSlider")
 
                     Text("5.0s")
                         .font(.caption)
@@ -326,6 +334,7 @@ struct SettingsView: View {
                     }
                     .foregroundColor(.red)
                 }
+                .accessibilityIdentifier("resetButton")
 
                 Spacer()
             }

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -35,6 +35,16 @@
 		97D854F12ED5402700D48062 /* MicroGestureDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D854EF2ED5402700D48062 /* MicroGestureDetector.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9778C2B92F184FF6000EC989 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 972FE5B62D7D97EE00414E44 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 972FE5BD2D7D97EE00414E44;
+			remoteInfo = GazeTurn;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		972FE5BE2D7D97EE00414E44 /* GazeTurn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GazeTurn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		972FE5C12D7D97EE00414E44 /* GazeTurnApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeTurnApp.swift; sourceTree = "<group>"; };
@@ -43,6 +53,8 @@
 		972FE5C82D7D97F000414E44 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		972FE5DF2D8851C900414E44 /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
 		972FE5E12D88522500414E44 /* BrowseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseView.swift; sourceTree = "<group>"; };
+		9778C2B32F184FF6000EC989 /* GazeTurnUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GazeTurnUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9778C2C62F18EDF0000EC989 /* GazeTurn.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GazeTurn.xctestplan; sourceTree = "<group>"; };
 		97D854BD2ED53EA500D48062 /* CamaraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamaraManager.swift; sourceTree = "<group>"; };
 		97D854BF2ED53EA500D48062 /* BlinkRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlinkRecognizer.swift; sourceTree = "<group>"; };
 		97D854C02ED53EA500D48062 /* HeadPoseDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadPoseDetector.swift; sourceTree = "<group>"; };
@@ -65,8 +77,19 @@
 		97D854EF2ED5402700D48062 /* MicroGestureDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicroGestureDetector.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		9778C2B42F184FF6000EC989 /* GazeTurnUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GazeTurnUITests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		972FE5BB2D7D97EE00414E44 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9778C2B02F184FF6000EC989 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -79,7 +102,9 @@
 		972FE5B52D7D97EE00414E44 = {
 			isa = PBXGroup;
 			children = (
+				9778C2C62F18EDF0000EC989 /* GazeTurn.xctestplan */,
 				972FE5C02D7D97EE00414E44 /* GazeTurn */,
+				9778C2B42F184FF6000EC989 /* GazeTurnUITests */,
 				972FE5BF2D7D97EE00414E44 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				972FE5BE2D7D97EE00414E44 /* GazeTurn.app */,
+				9778C2B32F184FF6000EC989 /* GazeTurnUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -233,6 +259,29 @@
 			productReference = 972FE5BE2D7D97EE00414E44 /* GazeTurn.app */;
 			productType = "com.apple.product-type.application";
 		};
+		9778C2B22F184FF6000EC989 /* GazeTurnUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9778C2BD2F184FF6000EC989 /* Build configuration list for PBXNativeTarget "GazeTurnUITests" */;
+			buildPhases = (
+				9778C2AF2F184FF6000EC989 /* Sources */,
+				9778C2B02F184FF6000EC989 /* Frameworks */,
+				9778C2B12F184FF6000EC989 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9778C2BA2F184FF6000EC989 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				9778C2B42F184FF6000EC989 /* GazeTurnUITests */,
+			);
+			name = GazeTurnUITests;
+			packageProductDependencies = (
+			);
+			productName = GazeTurnUITests;
+			productReference = 9778C2B32F184FF6000EC989 /* GazeTurnUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -240,11 +289,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1520;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					972FE5BD2D7D97EE00414E44 = {
 						CreatedOnToolsVersion = 15.2;
+					};
+					9778C2B22F184FF6000EC989 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 972FE5BD2D7D97EE00414E44;
 					};
 				};
 			};
@@ -262,6 +315,7 @@
 			projectRoot = "";
 			targets = (
 				972FE5BD2D7D97EE00414E44 /* GazeTurn */,
+				9778C2B22F184FF6000EC989 /* GazeTurnUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -273,6 +327,13 @@
 			files = (
 				972FE5C92D7D97F000414E44 /* Preview Assets.xcassets in Resources */,
 				972FE5C62D7D97F000414E44 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9778C2B12F184FF6000EC989 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,7 +371,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9778C2AF2F184FF6000EC989 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9778C2BA2F184FF6000EC989 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 972FE5BD2D7D97EE00414E44 /* GazeTurn */;
+			targetProxy = 9778C2B92F184FF6000EC989 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		972FE5CA2D7D97F000414E44 /* Debug */ = {
@@ -490,6 +566,48 @@
 			};
 			name = Release;
 		};
+		9778C2BB2F184FF6000EC989 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QRA5DG5SAD;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gazeTurn.GazeTurnUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GazeTurn;
+			};
+			name = Debug;
+		};
+		9778C2BC2F184FF6000EC989 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QRA5DG5SAD;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gazeTurn.GazeTurnUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GazeTurn;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -507,6 +625,15 @@
 			buildConfigurations = (
 				972FE5CD2D7D97F000414E44 /* Debug */,
 				972FE5CE2D7D97F000414E44 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9778C2BD2F184FF6000EC989 /* Build configuration list for PBXNativeTarget "GazeTurnUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9778C2BB2F184FF6000EC989 /* Debug */,
+				9778C2BC2F184FF6000EC989 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
