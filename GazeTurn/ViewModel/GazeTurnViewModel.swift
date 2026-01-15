@@ -203,10 +203,21 @@ class GazeTurnViewModel: ObservableObject {
 // MARK: - CameraManagerDelegate
 
 extension GazeTurnViewModel: CameraManagerDelegate {
+    // 用於限制日誌輸出頻率
+    private static var frameCount = 0
+    private static var lastLogTime = Date()
+
     func didCaptureFrame(_ sampleBuffer: CMSampleBuffer) {
         // 在背景執行緒處理 Vision
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            print("無法取得 pixelBuffer")
             return
+        }
+
+        // 每 60 幀輸出一次日誌
+        GazeTurnViewModel.frameCount += 1
+        if GazeTurnViewModel.frameCount % 60 == 0 {
+            print("已處理 \(GazeTurnViewModel.frameCount) 幀")
         }
 
         // 處理影像幀
@@ -214,6 +225,12 @@ extension GazeTurnViewModel: CameraManagerDelegate {
             // 未偵測到臉部
             DispatchQueue.main.async {
                 self.visualizationData.faceDetected = false
+            }
+            // 每 2 秒輸出一次未偵測到臉部的日誌
+            let now = Date()
+            if now.timeIntervalSince(GazeTurnViewModel.lastLogTime) > 2 {
+                print("未偵測到臉部")
+                GazeTurnViewModel.lastLogTime = now
             }
             return
         }
@@ -251,14 +268,22 @@ extension GazeTurnViewModel: CameraManagerDelegate {
         let yaw = faceObservation.yaw?.doubleValue ?? 0.0
         let pitch = faceObservation.pitch?.doubleValue ?? 0.0
         let roll = faceObservation.roll?.doubleValue ?? 0.0
+        let yawDegrees = yaw * 180.0 / .pi
+
+        // 每秒輸出一次頭部角度
+        if GazeTurnViewModel.frameCount % 30 == 0 {
+            let threshold = self.gestureCoordinator.currentMode.shakeAngleThreshold
+            print("頭部 Yaw: \(String(format: "%.1f", yawDegrees))° (閾值: \(threshold)°)")
+        }
 
         DispatchQueue.main.async {
-            self.visualizationData.headYaw = yaw * 180.0 / .pi // 轉換為角度
+            self.visualizationData.headYaw = yawDegrees
             self.visualizationData.headPitch = pitch * 180.0 / .pi
             self.visualizationData.headRoll = roll * 180.0 / .pi
             self.visualizationData.shakeThreshold = self.gestureCoordinator.currentMode.shakeAngleThreshold
 
             if headShakeDirection != .none {
+                print("檢測到搖頭: \(headShakeDirection.displayName)")
                 self.gestureCoordinator.processHeadShake(headShakeDirection)
             }
         }
