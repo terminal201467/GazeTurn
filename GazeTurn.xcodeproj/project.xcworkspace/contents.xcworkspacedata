@@ -4,4 +4,10 @@
    <FileRef
       location = "self:">
    </FileRef>
+   <FileRef
+      location = "group:EnhancedGestureProcessor.swift">
+   </FileRef>
+   <FileRef
+      location = "group:GestureRecognitionIntegrationGuide.swift">
+   </FileRef>
 </Workspace>
