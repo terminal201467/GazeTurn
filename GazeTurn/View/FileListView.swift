@@ -36,7 +36,7 @@ struct FileListView: View {
             }
         }
         .sheet(isPresented: $showingFilePicker) {
-            DocumentPicker(fileManager: fileManager)
+            DocumentPicker(fileManager: fileManager, isPresented: $showingFilePicker)
         }
         .sheet(item: $selectedFile) { file in
             BrowseView(file: file)
@@ -177,7 +177,7 @@ struct FileRow: View {
 
 struct DocumentPicker: UIViewControllerRepresentable {
     @ObservedObject var fileManager: MusicFileManager
-    @Environment(\.dismiss) private var dismiss
+    @Binding var isPresented: Bool
 
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         let picker = UIDocumentPickerViewController(
@@ -197,27 +197,25 @@ struct DocumentPicker: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {}
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(fileManager: fileManager, dismiss: dismiss)
+        Coordinator(parent: self)
     }
 
     class Coordinator: NSObject, UIDocumentPickerDelegate {
-        let fileManager: MusicFileManager
-        let dismiss: DismissAction
+        let parent: DocumentPicker
 
-        init(fileManager: MusicFileManager, dismiss: DismissAction) {
-            self.fileManager = fileManager
-            self.dismiss = dismiss
+        init(parent: DocumentPicker) {
+            self.parent = parent
         }
 
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             for url in urls {
-                fileManager.addFile(from: url)
+                parent.fileManager.addFile(from: url)
             }
-            dismiss()
+            parent.isPresented = false
         }
 
         func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-            dismiss()
+            parent.isPresented = false
         }
     }
 }
