@@ -314,6 +314,7 @@ extension GazeTurnViewModel: CameraManagerDelegate {
 
 extension GazeTurnViewModel: GestureCoordinatorDelegate {
     func didDetectPageTurn(direction: PageDirection) {
+        print("ViewModel: didDetectPageTurn 被呼叫 - \(direction == .next ? "下一頁" : "上一頁")")
         handlePageTurn(direction: direction)
 
         // 更新視覺化數據

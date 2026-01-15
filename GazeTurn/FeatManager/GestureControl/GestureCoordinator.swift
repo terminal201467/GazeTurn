@@ -132,13 +132,21 @@ class GestureCoordinator {
     /// - Parameter direction: 搖頭方向
     func processHeadShake(_ direction: HeadShakeDirection) {
         // 如果當前模式不啟用搖頭，直接返回
-        guard currentMode.enableHeadShake else { return }
+        guard currentMode.enableHeadShake else {
+            print("GestureCoordinator: 搖頭未啟用")
+            return
+        }
 
         // 如果沒有檢測到搖頭，返回
         guard direction != .none else { return }
 
+        print("GestureCoordinator: 收到搖頭 - \(direction.displayName)")
+
         // 將搖頭方向轉換為翻頁方向
-        guard let pageDir = direction.pageDirection else { return }
+        guard let pageDir = direction.pageDirection else {
+            print("GestureCoordinator: 無法轉換為翻頁方向")
+            return
+        }
 
         // 處理搖頭手勢
         handleHeadShake(direction: pageDir)
@@ -160,11 +168,15 @@ class GestureCoordinator {
     /// 處理搖頭手勢
     /// - Parameter direction: 翻頁方向
     private func handleHeadShake(direction: PageDirection) {
+        print("GestureCoordinator: 處理搖頭手勢 - \(direction == .next ? "下一頁" : "上一頁")")
+        print("GestureCoordinator: requireConfirmation = \(currentMode.requireConfirmation)")
+
         if currentMode.requireConfirmation {
             // 混合模式：等待眨眼確認
             startWaitingForConfirmation(direction: direction)
         } else {
             // 純搖頭模式：直接觸發翻頁
+            print("GestureCoordinator: 觸發翻頁...")
             triggerPageTurn(direction: direction)
         }
     }
@@ -246,7 +258,9 @@ class GestureCoordinator {
     /// 觸發翻頁動作
     /// - Parameter direction: 翻頁方向
     private func triggerPageTurn(direction: PageDirection) {
+        print("GestureCoordinator: triggerPageTurn - delegate存在: \(delegate != nil)")
         delegate?.didDetectPageTurn(direction: direction)
+        print("GestureCoordinator: 已呼叫 delegate.didDetectPageTurn")
     }
 
     // MARK: - Public Methods
