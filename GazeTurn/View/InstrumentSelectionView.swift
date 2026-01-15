@@ -67,7 +67,13 @@ struct InstrumentSelectionView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showingCalibration) {
+            .sheet(isPresented: $showingCalibration, onDismiss: {
+                // 校準完成後，儲存樂器模式並通知父視圖
+                if let instrument = selectedInstrument, let mode = selectedMode {
+                    mode.save()
+                    onInstrumentSelected?(instrument)
+                }
+            }) {
                 if let mode = selectedMode {
                     CalibrationView(instrumentMode: mode)
                 }
