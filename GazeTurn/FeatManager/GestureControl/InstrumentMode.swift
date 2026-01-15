@@ -153,9 +153,9 @@ struct InstrumentMode: Codable {
             instrumentType: .keyboard,
             enableBlink: false,
             enableHeadShake: true,
-            shakeAngleThreshold: 30.0,      // 標準角度
-            shakeDuration: 0.3,
-            shakeCooldown: 0.5,
+            shakeAngleThreshold: 18.0,      // 較自然的角度
+            shakeDuration: 0.2,
+            shakeCooldown: 0.8,
             requireConfirmation: false
         )
     }
@@ -179,9 +179,9 @@ struct InstrumentMode: Codable {
             instrumentType: .percussion,
             enableBlink: false,
             enableHeadShake: true,
-            shakeAngleThreshold: 30.0,
-            shakeDuration: 0.3,
-            shakeCooldown: 0.5,
+            shakeAngleThreshold: 15.0,      // 降低閾值，更自然的搖頭
+            shakeDuration: 0.2,              // 縮短持續時間
+            shakeCooldown: 0.8,              // 增加冷卻時間避免連續觸發
             requireConfirmation: false
         )
     }
@@ -192,9 +192,9 @@ struct InstrumentMode: Codable {
             instrumentType: .vocal,
             enableBlink: false,
             enableHeadShake: true,
-            shakeAngleThreshold: 30.0,
-            shakeDuration: 0.3,
-            shakeCooldown: 0.5,
+            shakeAngleThreshold: 18.0,      // 較自然的角度
+            shakeDuration: 0.2,
+            shakeCooldown: 0.8,
             requireConfirmation: false
         )
     }
