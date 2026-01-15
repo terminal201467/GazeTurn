@@ -7,14 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		970C305E2F190F50001512B9 /* GestureRecognitionExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C305D2F190F50001512B9 /* GestureRecognitionExample.swift */; };
-		970C30602F190F80001512B9 /* README_GestureRecognition.md in Resources */ = {isa = PBXBuildFile; fileRef = 970C305F2F190F80001512B9 /* README_GestureRecognition.md */; };
-		970C30622F190FA4001512B9 /* GestureRecognitionChecklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C30612F190FA4001512B9 /* GestureRecognitionChecklist.swift */; };
-		970C30642F190FE4001512B9 /* GestureRecognitionFlowChart.md in Resources */ = {isa = PBXBuildFile; fileRef = 970C30632F190FE4001512B9 /* GestureRecognitionFlowChart.md */; };
-		970C30662F191015001512B9 /* QuickStart_GestureRecognition.md in Resources */ = {isa = PBXBuildFile; fileRef = 970C30652F191015001512B9 /* QuickStart_GestureRecognition.md */; };
-		970C30682F1910E5001512B9 /* BUILD_FIX_SUMMARY.md in Resources */ = {isa = PBXBuildFile; fileRef = 970C30672F1910E5001512B9 /* BUILD_FIX_SUMMARY.md */; };
-		970C306A2F191129001512B9 /* GestureRecognitionExample 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C30692F191129001512B9 /* GestureRecognitionExample 2.swift */; };
-		970C306C2F19115D001512B9 /* COMPILE_FIX_COMPLETE.md in Resources */ = {isa = PBXBuildFile; fileRef = 970C306B2F19115D001512B9 /* COMPILE_FIX_COMPLETE.md */; };
 		972FE5C22D7D97EE00414E44 /* GazeTurnApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5C12D7D97EE00414E44 /* GazeTurnApp.swift */; };
 		972FE5C42D7D97EE00414E44 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972FE5C32D7D97EE00414E44 /* ContentView.swift */; };
 		972FE5C62D7D97F000414E44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 972FE5C52D7D97F000414E44 /* Assets.xcassets */; };
@@ -54,14 +46,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		970C305D2F190F50001512B9 /* GestureRecognitionExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureRecognitionExample.swift; sourceTree = "<group>"; };
-		970C305F2F190F80001512B9 /* README_GestureRecognition.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README_GestureRecognition.md; sourceTree = "<group>"; };
-		970C30612F190FA4001512B9 /* GestureRecognitionChecklist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureRecognitionChecklist.swift; sourceTree = "<group>"; };
-		970C30632F190FE4001512B9 /* GestureRecognitionFlowChart.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = GestureRecognitionFlowChart.md; sourceTree = "<group>"; };
-		970C30652F191015001512B9 /* QuickStart_GestureRecognition.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = QuickStart_GestureRecognition.md; sourceTree = "<group>"; };
-		970C30672F1910E5001512B9 /* BUILD_FIX_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = BUILD_FIX_SUMMARY.md; sourceTree = "<group>"; };
-		970C30692F191129001512B9 /* GestureRecognitionExample 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GestureRecognitionExample 2.swift"; sourceTree = "<group>"; };
-		970C306B2F19115D001512B9 /* COMPILE_FIX_COMPLETE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = COMPILE_FIX_COMPLETE.md; sourceTree = "<group>"; };
 		972FE5BE2D7D97EE00414E44 /* GazeTurn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GazeTurn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		972FE5C12D7D97EE00414E44 /* GazeTurnApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeTurnApp.swift; sourceTree = "<group>"; };
 		972FE5C32D7D97EE00414E44 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -207,14 +191,6 @@
 				97D854BF2ED53EA500D48062 /* BlinkRecognizer.swift */,
 				97D854C02ED53EA500D48062 /* HeadPoseDetector.swift */,
 				97D854C12ED53EA500D48062 /* VisionProcessor.swift */,
-				970C305D2F190F50001512B9 /* GestureRecognitionExample.swift */,
-				970C305F2F190F80001512B9 /* README_GestureRecognition.md */,
-				970C30612F190FA4001512B9 /* GestureRecognitionChecklist.swift */,
-				970C30632F190FE4001512B9 /* GestureRecognitionFlowChart.md */,
-				970C30652F191015001512B9 /* QuickStart_GestureRecognition.md */,
-				970C30672F1910E5001512B9 /* BUILD_FIX_SUMMARY.md */,
-				970C30692F191129001512B9 /* GestureRecognitionExample 2.swift */,
-				970C306B2F19115D001512B9 /* COMPILE_FIX_COMPLETE.md */,
 			);
 			path = GazeCore;
 			sourceTree = "<group>";
@@ -351,11 +327,6 @@
 			files = (
 				972FE5C92D7D97F000414E44 /* Preview Assets.xcassets in Resources */,
 				972FE5C62D7D97F000414E44 /* Assets.xcassets in Resources */,
-				970C30682F1910E5001512B9 /* BUILD_FIX_SUMMARY.md in Resources */,
-				970C30602F190F80001512B9 /* README_GestureRecognition.md in Resources */,
-				970C30662F191015001512B9 /* QuickStart_GestureRecognition.md in Resources */,
-				970C30642F190FE4001512B9 /* GestureRecognitionFlowChart.md in Resources */,
-				970C306C2F19115D001512B9 /* COMPILE_FIX_COMPLETE.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,14 +358,11 @@
 				97D854C82ED53EA500D48062 /* CamaraManager.swift in Sources */,
 				97D854C92ED53EA500D48062 /* VisionProcessor.swift in Sources */,
 				97D854CA2ED53EA500D48062 /* InstrumentMode.swift in Sources */,
-				970C305E2F190F50001512B9 /* GestureRecognitionExample.swift in Sources */,
 				97D854D72ED53F0400D48062 /* GestureVisualizationView.swift in Sources */,
-				970C306A2F191129001512B9 /* GestureRecognitionExample 2.swift in Sources */,
 				97D854DA2ED53F0400D48062 /* CalibrationView.swift in Sources */,
 				97D854E82ED53FEB00D48062 /* EnvironmentAnalyzer.swift in Sources */,
 				97D854E92ED53FEB00D48062 /* SmartCalibrationEngine.swift in Sources */,
 				97D854EA2ED53FEB00D48062 /* GestureLearningEngine.swift in Sources */,
-				970C30622F190FA4001512B9 /* GestureRecognitionChecklist.swift in Sources */,
 				97D854EB2ED53FEB00D48062 /* GesturePredictionModel.swift in Sources */,
 				97D854DB2ED53F0400D48062 /* DashboardView.swift in Sources */,
 				97D854DC2ED53F0400D48062 /* InstrumentSelectionView.swift in Sources */,
