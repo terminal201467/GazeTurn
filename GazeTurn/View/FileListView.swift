@@ -82,17 +82,19 @@ struct FileListView: View {
     private var fileList: some View {
         List {
             ForEach(fileManager.files) { file in
-                FileRow(file: file)
-                    .onTapGesture {
-                        selectedFile = file
+                Button {
+                    selectedFile = file
+                } label: {
+                    FileRow(file: file)
+                }
+                .buttonStyle(.plain)
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button(role: .destructive) {
+                        fileManager.removeFile(file)
+                    } label: {
+                        Label("刪除", systemImage: "trash")
                     }
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button(role: .destructive) {
-                            fileManager.removeFile(file)
-                        } label: {
-                            Label("刪除", systemImage: "trash")
-                        }
-                    }
+                }
             }
         }
         .listStyle(.plain)
