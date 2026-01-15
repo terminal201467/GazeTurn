@@ -84,14 +84,20 @@ class GazeTurnViewModel: ObservableObject {
 
     /// 開始相機捕捉
     func startCamera() {
+        // 重新檢查權限狀態
+        checkCameraPermission()
+
         guard cameraPermissionStatus == .authorized else {
-            print("相機權限未授權")
+            print("相機權限未授權，當前狀態: \(cameraPermissionStatus.rawValue)")
             return
         }
 
+        print("正在啟動相機...")
         cameraManager.startSession()
         isCameraAvailable = true
         updateGestureStatus("相機已啟動")
+        print("相機已啟動，樂器模式: \(gestureCoordinator.currentMode.instrumentType.displayName)")
+        print("啟用搖頭: \(gestureCoordinator.currentMode.enableHeadShake), 啟用眨眼: \(gestureCoordinator.currentMode.enableBlink)")
     }
 
     /// 停止相機捕捉
@@ -104,9 +110,8 @@ class GazeTurnViewModel: ObservableObject {
     /// 檢查相機權限
     func checkCameraPermission() {
         let status = AVCaptureDevice.authorizationStatus(for: .video)
-        DispatchQueue.main.async {
-            self.cameraPermissionStatus = status
-        }
+        // 同步更新，避免時機問題
+        self.cameraPermissionStatus = status
     }
 
     /// 請求相機權限
